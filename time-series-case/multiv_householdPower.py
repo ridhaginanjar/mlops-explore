@@ -12,10 +12,6 @@
 # Belum ada info diawalain itu memprediksi di satu langkah kedepan (1 hari) atau beberapa langkah kedepan
 
 # # Importing Library
-
-# In[1]:
-
-
 import numpy as np
 import pandas as pd
 from keras.layers import Dense, LSTM
