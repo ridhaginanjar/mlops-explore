@@ -6,3 +6,4 @@ seaborn
 keras
 mlflow
 nbconvert
+google-cloud-storage

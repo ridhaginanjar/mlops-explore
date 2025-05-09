@@ -12,12 +12,15 @@
 # Belum ada info diawalain itu memprediksi di satu langkah kedepan (1 hari) atau beberapa langkah kedepan
 
 # # Importing Library
+import mlflow.experiments
 import numpy as np
 import pandas as pd
 from keras.layers import Dense, LSTM
 import matplotlib.pyplot as plt
 import tensorflow as tf
 
+import mlflow
+mlflow.tensorflow.autolog()
 
 # # Importing Dataset
 df = pd.read_csv("https://github.com/ridhaginanjar/mlops-explore/releases/download/climate-time-series/DailyDelhiClimateTrain.csv")
@@ -47,13 +50,17 @@ def windowed_dataset(series, window_size, batch_size, shuffle_buffer):
 
 # # Training
 train_set = windowed_dataset(temp, window_size=60, batch_size=100, shuffle_buffer=1000)
-model = tf.keras.models.Sequential([
-    tf.keras.layers.LSTM(60, return_sequences=True),
-    tf.keras.layers.LSTM(60),
-    tf.keras.layers.Dense(30, activation='relu'),
-    tf.keras.layers.Dense(10, activation='relu'),
-    tf.keras.layers.Dense(1)
-])
+
+mlflow.set_tracking_uri("http://35.193.47.166:5000")
+
+with mlflow.start_run() as run:
+    model = tf.keras.models.Sequential([
+        tf.keras.layers.LSTM(60, return_sequences=True),
+        tf.keras.layers.LSTM(60),
+        tf.keras.layers.Dense(30, activation='relu'),
+        tf.keras.layers.Dense(10, activation='relu'),
+        tf.keras.layers.Dense(1)
+    ])
 
 optimizer = tf.keras.optimizers.SGD(learning_rate=1.000e-04, momentum=0.9)
 model.compile(loss=tf.keras.losses.Huber(), optimizer=optimizer, metrics=["mae"])
