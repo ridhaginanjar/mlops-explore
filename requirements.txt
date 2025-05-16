@@ -1,9 +1,0 @@
-pandas
-matplotlib
-numpy
-tensorflow
-seaborn
-keras
-mlflow
-nbconvert
-google-cloud-storage
