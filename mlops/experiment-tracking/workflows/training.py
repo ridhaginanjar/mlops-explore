@@ -47,4 +47,4 @@ def train(train_dir, test_dir, MODELS, OPTIMIZERS: str, LOSSES: str, METRICS: li
         callbacks=[callbacks]
     )
 
-    return MODELS, train_gen, test_gen
+    return MODELS, train_gen, test_gen, history

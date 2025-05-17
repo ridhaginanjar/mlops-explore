@@ -2,3 +2,5 @@
 computer-vision-case/data
 mlops/experiment-tracking/data
 mlops/experiment-tracking/mlruns
+mlruns/
+mlops/experiment-tracking/model
