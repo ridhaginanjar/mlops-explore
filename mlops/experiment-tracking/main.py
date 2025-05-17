@@ -1,3 +1,4 @@
+import mlflow.data.tensorflow_dataset
 import tensorflow as tf
 import mlflow
 import mlflow.keras
@@ -14,19 +15,21 @@ from workflows.evaluations import evaluate_model
 
 from tensorflow.keras import models, layers
 from mlflow.models import infer_signature
+from mlflow.data.tensorflow_dataset import from_tensorflow
 
 
 def main():
     server_uri = 'http://localhost:8080/'
     mlflow.set_tracking_uri(server_uri)
     mlflow.set_experiment("xray-binary-classification")
+    mlflow.tensorflow.autolog()
 
-    with mlflow.start_run():
+    with mlflow.start_run(run_name='xray-bin-class'):
         # Set ID
-        mlflow.log_params({
-            'User': 'Ridha Ginanjar',
-            "Time": time.strftime("%Y-%m-%d %H:%M:%S")
-        })
+        # mlflow.log_params({
+        #     'User': 'Ridha Ginanjar',
+        #     "Time": time.strftime("%Y-%m-%d %H:%M:%S")
+        # })
 
 
         zip_path = './data/archive.zip'
@@ -37,11 +40,11 @@ def main():
         # Extract zipfile into our data folder.
         extract_zip(zip_path, extracted_path)
 
-        # Set Dataset
-        mlflow.log_param('dataset', 'chest-xray-v1')
-
         # Augmented minority dataset (only for NORMAL class)
         data_augmentations(normal_class_dir, augmented_dir)
+
+        # # Set Dataset parameter
+        # mlflow.log_param('dataset', 'chest-xray-v1')
 
         # Set notes about imbalanced dataset
         with open('note_preprocessing.txt', 'w') as f:
@@ -69,30 +72,36 @@ def main():
         loss = 'binary_crossentropy'
         metrics=['accuracy']
         CALLBACKS = myCallBacks()
-        mlflow.log_params({
-            'optimizer': optimizer,
-            'loss':loss,
-            'metrics':metrics,
-        })
+        # mlflow.log_params({
+        #     'optimizer': optimizer,
+        #     'loss':loss,
+        #     'metrics':metrics,
+        # })
 
         # Training and testing directory
         train_dir = './data/chest_xray/train'
         test_dir = './data/chest_xray/test'
 
         # Training
-        model_trained, _, test_gen, history = train(train_dir, test_dir, 
+        model_trained, train_gen, val_gen, test_gen, history = train(train_dir, test_dir, 
                                                 model, optimizer, loss, metrics,
                                                 callbacks=CALLBACKS)
+        
+        # Log input dataset
+        # train_dataset = from_tensorflow(train_gen)
+        # val_dataset = from_tensorflow(val_gen)
+        # mlflow.log_input(train_dataset)
+        # mlflow.log_input(val_dataset)
 
         # Evaluate
         loss_eval, acc_eval = evaluate_model(model_trained, test_gen)
         
         # Set Evaluations
-        mlflow.log_params({
-            'loss_val': loss_eval,
-            'acc_val': acc_eval,
-            'validation_accuracy': history.history['val_accuracy']
-        })
+        # mlflow.log_metrics({
+        #     'loss_val': loss_eval,
+        #     'acc_val': acc_eval,
+        #     'validation_accuracy': history.history['val_accuracy']
+        # })
 
         # Export Model
         model_dir = './model'
@@ -107,7 +116,7 @@ def main():
 
         ## Log signature
         signature = infer_signature(x_sample, pred)
-        mlflow.keras.log_model(model, "model", signature=signature)
+        mlflow.tensorflow.log_model(model,artifact_path='gs://mlops-tracking-exp/research/model', signature=signature, pip_requirements='/Users/dicoding/Dicoding/github/mlops/requirements.txt')
 
 if __name__ == '__main__':
     main()
