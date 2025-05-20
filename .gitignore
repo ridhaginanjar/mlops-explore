@@ -4,3 +4,5 @@ mlops/experiment-tracking/data
 mlops/experiment-tracking/mlruns
 mlruns/
 mlops/experiment-tracking/model
+mlops/ml-pipelines/mlflow/data/
+mlops/ml-pipelines/mlflow/Miniconda3-latest-MacOSX-arm64.sh

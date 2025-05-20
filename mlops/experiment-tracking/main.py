@@ -22,9 +22,9 @@ def main():
     server_uri = 'http://localhost:8080' # Change to remote server if its needed
     mlflow.set_tracking_uri(server_uri)
     mlflow.set_experiment("xray-binary-classification")
-    mlflow.tensorflow.autolog()
 
-    with mlflow.start_run():
+    with mlflow.start_run() as run:
+        mlflow.tensorflow.autolog()
         # Set ID
         # mlflow.log_params({
         #     'User': 'Ridha Ginanjar',
