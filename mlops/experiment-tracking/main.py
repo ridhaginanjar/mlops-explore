@@ -19,12 +19,12 @@ from mlflow.data.tensorflow_dataset import from_tensorflow
 
 
 def main():
-    server_uri = 'http://localhost:8080/'
+    server_uri = 'http://localhost:8080' # Change to remote server if its needed
     mlflow.set_tracking_uri(server_uri)
     mlflow.set_experiment("xray-binary-classification")
     mlflow.tensorflow.autolog()
 
-    with mlflow.start_run(run_name='xray-bin-class'):
+    with mlflow.start_run():
         # Set ID
         # mlflow.log_params({
         #     'User': 'Ridha Ginanjar',
@@ -32,7 +32,7 @@ def main():
         # })
 
 
-        zip_path = './data/archive.zip'
+        zip_path = '/Users/dicoding/Dicoding/github/mlops/mlops/experiment-tracking/data/archive.zip'
         extracted_path = './data/'
         normal_class_dir = './data/chest_xray/train/NORMAL'
         augmented_dir = './data/chest_xray/train/NORMAL_augmented'
@@ -116,7 +116,8 @@ def main():
 
         ## Log signature
         signature = infer_signature(x_sample, pred)
-        mlflow.tensorflow.log_model(model,artifact_path='gs://mlops-tracking-exp/research/model', signature=signature, pip_requirements='/Users/dicoding/Dicoding/github/mlops/requirements.txt')
+        # mlflow.tensorflow.log_model(model
+        #                             ,artifact_path='model', signature=signature, pip_requirements='/Users/dicoding/Dicoding/github/mlops/requirements.txt')
 
 if __name__ == '__main__':
     main()

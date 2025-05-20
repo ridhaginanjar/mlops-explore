@@ -1,0 +1,2 @@
+The dataset contain imbalanced dataset problem where NORMAL class is less than PNEUMONIA class 
+The solutions to solve this problem is doing data augmentation for only NORMAL class

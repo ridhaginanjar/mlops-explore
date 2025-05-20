@@ -1,0 +1,11 @@
+# Pipeline Name
+name: xray-bin-class
+
+# Setup Environment
+conda_env: conda.yaml
+# python_env: python_env.yaml
+
+# Entry Points
+entry_points:
+  main:
+    command: "python ../../experiment-tracking/main.py"
