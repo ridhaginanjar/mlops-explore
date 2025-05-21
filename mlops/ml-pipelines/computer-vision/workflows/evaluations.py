@@ -1,5 +1,8 @@
-def evaluate_model(MODELS, test_gen):
-    loss, acc = MODELS.evaluate(test_gen)
-    print(f"Test accuracy: {acc: .4f}")
+# from prefect import flow
 
-    return loss, acc
+# @flow(name='evaluations-model', description='Evaluate model')
+# def evaluate_model(MODELS, test_gen):
+#     loss, acc = MODELS.evaluate(test_gen)
+#     print(f"Test accuracy: {acc: .4f}")
+
+#     return loss, acc

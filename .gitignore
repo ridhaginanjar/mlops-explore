@@ -6,3 +6,5 @@ mlruns/
 mlops/experiment-tracking/model
 mlops/ml-pipelines/mlflow/data/
 mlops/ml-pipelines/mlflow/Miniconda3-latest-MacOSX-arm64.sh
+mlartifacts
+mlops/ml-pipelines/computer-vision/data
