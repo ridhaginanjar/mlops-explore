@@ -4,3 +4,4 @@ matplotlib~=3.9
 tensorflow~=2.19
 nbconvert~=7.16
 mlflow~=2.22
+prefect~=3.4
