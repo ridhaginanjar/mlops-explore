@@ -15,9 +15,13 @@ def classif_report(y_true, y_pred, target_names):
     prediction_accuracy = report['accuracy']
 
     return {
-        "NORMAL_report": NORMAL_class,
-        "PNEUMONIA_report": PNEUMONIA_class,
-        "predict_acc":prediction_accuracy
+        "NORMAL_precision": NORMAL_class['precision'],
+        "NORMAL_recall": NORMAL_class['recall'],
+        "NORMAL_f1": NORMAL_class['f1-score'] ,
+        "PNEUMONIA_precision": PNEUMONIA_class['precision'],
+        "PNEUOMONIA_recall":PNEUMONIA_class['recall'],
+        "PNEUMONIA_f1": PNEUMONIA_class['f1-score'],
+        "predict_acc": prediction_accuracy
     }
 
 
@@ -51,12 +55,9 @@ def conf_matrix(y_true, y_pred, test_gen):
     }
 
 @task(name='generate-ROC-AUC')
-def roc_auc_generator(y_true, y_prob):
-    fpr, tpr, _ = roc_curve(y_true, y_prob)
+def auc_generator(y_true, y_prob):
     auc = roc_auc_score(y_true, y_prob)
 
     return {
-        'false-positif-rate':fpr,
-        'true-positif-rate': tpr,
         'area-under-the-curve': auc
     }
