@@ -7,6 +7,19 @@ We are going to reproduce 4 types of pipeline:
 
 The stack that used is Prefect.
 
+# Validation Pipeline
+The objective of validation pipeline is to validate several component.
+- Data Validation
+- Training Validation
+- Model Validation
+
+## Data Validation
+This pipeline is to validate our data that gonna be used for create/update model machine learning.
+The validation has three distinct checks on our data:
+- Check for data anomalies.
+- Check that the data schema hasn’t changed.
+- Check that the statistics of our new datasets still align with statistics from our previous training datasets.
+
 # About MLFlow
 Currently there is an error when running mlflow project because of conflict when using mlflow.start_run().
 
