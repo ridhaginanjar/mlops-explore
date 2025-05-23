@@ -5,6 +5,7 @@ import mlflow.keras
 import time
 import mlflow.models.signature
 import shutil
+import os
 
 from workflows.preprocessing import preprocessing_data
 from workflows.training import train_pipeline
@@ -17,10 +18,7 @@ from prefect import flow
 
 @flow(name='main-pipeline-xray-binary', version="1", description='Runnning Pipeline for Xray Binary Classifications')
 def main_pipeline():
-    # Homework
-    ## Need to check the refactor.
-    ## Create validation pipeline
-    ## Create data pipeline
+    os.environ["PREFECT_API_URL"] = "http://127.0.0.1:4200/api"
 
     server_uri = 'http://localhost:8080' # Change to remote server if its needed
     mlflow.set_tracking_uri(server_uri)
@@ -61,4 +59,8 @@ def main_pipeline():
     shutil.rmtree(chest_xray_dir)
 
 if __name__ == '__main__':
-    main_pipeline()
+    main_pipeline.serve(name='xray-binary-classification', interval=3600)
+    
+    # What is Deployment on Prefect?
+    ## Deployment allow you to run flows on a schedule and triggers runs based on events.
+    ## This time, we want to try schedule a training pipeline. 
