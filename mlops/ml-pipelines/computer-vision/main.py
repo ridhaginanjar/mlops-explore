@@ -4,6 +4,7 @@ import mlflow
 import mlflow.keras
 import time
 import mlflow.models.signature
+import shutil
 
 from workflows.preprocessing import preprocessing_data
 from workflows.training import train_pipeline
@@ -54,6 +55,10 @@ def main_pipeline():
     # val_dataset = from_tensorflow(val_gen)
     # mlflow.log_input(train_dataset)
     # mlflow.log_input(val_dataset)
+    
+    # Clean Up -> it's running locally, so sometimes the dataset from chest_xray gonna multiply each training process.
+    chest_xray_dir = './data/chest_xray'
+    shutil.rmtree(chest_xray_dir)
 
 if __name__ == '__main__':
     main_pipeline()
