@@ -25,7 +25,7 @@ To retrain pipeline, we can set based on several cases:
 - Automate:
     - Based on a schedule or a trigger, the training and validations pipeline will start based on specific time.
     - Model performance degradation
-    - On signification change in data distributions.
+    - On signification change in data distributions (keyword: concept drift).
 - Manual:
     - On demand, when the stackholder need to create their own new models.
     - On availability new trainig data.
