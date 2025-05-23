@@ -30,6 +30,12 @@ To retrain pipeline, we can set based on several cases:
     - On demand, when the stackholder need to create their own new models.
     - On availability new trainig data.
 
+### Scheduling Pipeline with Prefect
+To do scheduling with Prefect, you only need to create deployment on your script. 
+In this case, the function main_pipeline() can add .serve to make it as deployment
+`main_pipeline.serve(name='xx', interavl=60)` or you can use cron method.
+More about .serve: https://docs.prefect.io/v3/deploy/run-flows-in-local-processes#additional-serve-options
+
 # Inisight about the types of pipeline
 There are some types of pipeline that can produce for machine learning systems. The pipeline can be categorized with two functions:
 - Delivered predictions: Type of pipeline that orchestrate when user request, make predictions, and returning predictions result.
