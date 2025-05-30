@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import mlflow
 
 from prefect import task
-from sklearn.metrics import classification_report, confusion_matrix, roc_auc_score, roc_curve
+from sklearn.metrics import classification_report, confusion_matrix, roc_auc_score, roc_curve, f1_score
 
 
 @task(name='classification report')
@@ -13,6 +13,7 @@ def classif_report(y_true, y_pred, target_names):
     NORMAL_class = report['NORMAL']
     PNEUMONIA_class = report['PNEUMONIA']
     prediction_accuracy = report['accuracy']
+    overall_f1_score = f1_score(y_true, y_pred)
 
     return {
         "NORMAL_precision": NORMAL_class['precision'],
@@ -21,7 +22,8 @@ def classif_report(y_true, y_pred, target_names):
         "PNEUMONIA_precision": PNEUMONIA_class['precision'],
         "PNEUOMONIA_recall":PNEUMONIA_class['recall'],
         "PNEUMONIA_f1": PNEUMONIA_class['f1-score'],
-        "predict_acc": prediction_accuracy
+        "predict_acc": prediction_accuracy,
+        "overall_f1": overall_f1_score
     }
 
 

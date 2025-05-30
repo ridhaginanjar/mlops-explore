@@ -1,4 +1,5 @@
 import mlflow
+import datetime
 
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras import models, layers
@@ -54,6 +55,7 @@ def predict_model(model, test_gen):
 def train_pipeline(train_dir, test_dir):
 
     with mlflow.start_run() as run:
+        mlflow.set_tag("training_date", datetime.datetime.now())
         mlflow.tensorflow.autolog()
         run_id = run.info.run_id
 
@@ -93,8 +95,8 @@ def train_pipeline(train_dir, test_dir):
         y_true, y_prob, y_pred = predict_model(model, test_gen)
         
         # Evaluate
-        # loss, acc = model.evaluate(test_gen)
-        # print(f"Test accuracy: {acc: .4f}")
+        loss, acc = model.evaluate(test_gen)
+        print(f"Test accuracy: {acc: .4f}")
 
         # ------------------------------------------------
         # Archive Param
@@ -121,4 +123,4 @@ def train_pipeline(train_dir, test_dir):
         #     'validation_accuracy': history.history['val_accuracy']
         # })
 
-    return run_id, y_true, y_prob, y_pred
+    return run_id, y_true, y_prob, y_pred, loss, acc

@@ -9,11 +9,6 @@ def validate_model(run_id, y_true, y_pred, y_prob, train_dir, test_dir):
 
     with mlflow.start_run(run_id=run_id):
         mlflow.tensorflow.autolog()
-        # Validasi Model
-        ## Classification Report -> Precision, Recall, f1-score
-        ## Confussion Matrix
-        ## ROC
-        ## AUC
 
         _, test_gen, _ = training_augmentations(train_dir, test_dir)
 
@@ -28,3 +23,4 @@ def validate_model(run_id, y_true, y_pred, y_prob, train_dir, test_dir):
         # ROC and AUC
         roc_auc_dict = auc_generator(y_true, y_prob)
         mlflow.log_metrics(roc_auc_dict)
+    return classif_dict, conf_matrix_dict, roc_auc_dict

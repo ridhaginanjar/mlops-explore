@@ -53,3 +53,9 @@ Currently there is an error when running mlflow project because of conflict when
 But when not specified it, the pipeline not tracked into "pipeline run" even tho it's finished.
 It could be a BUG from MLFLOW: 
 http://github.com/mlflow/mlflow/issues/4830
+
+
+# Still need to explore
+- Monitoring and Logging
+- CI/CD
+- Workflow Instrumentations
