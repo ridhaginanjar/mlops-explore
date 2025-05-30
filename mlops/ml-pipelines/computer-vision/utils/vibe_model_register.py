@@ -29,7 +29,7 @@ def update_registered_model(run_id, f1_score, pred_acc):
         print("[ERROR] Missing required metrics. Aborting update.")
         return
 
-    model_name = "xray-binary-classification-new"
+    model_name = "xray-binary-classification-nx"
     client = MlflowClient()
 
     try:
@@ -76,7 +76,6 @@ def update_registered_model(run_id, f1_score, pred_acc):
                 client.set_model_version_tag(model_name, mv.version, "stage", "production")
 
                 old_version = latest_model.version
-                client.delete_registered_model_alias(model_name, "production")
                 client.set_registered_model_alias(model_name, "archived", old_version)
                 client.set_model_version_tag(model_name, old_version, "stage", "archived")
 
