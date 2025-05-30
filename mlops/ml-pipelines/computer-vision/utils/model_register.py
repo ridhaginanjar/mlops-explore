@@ -34,10 +34,11 @@ def update_registered_model(run_id, f1_score, pred_acc):
     if f1_score is not None and pred_acc is not None:
         # Fetch the MLFlow client to interact with registry
         client = mlflow.tracking.MlflowClient()
-        model_name = 'xray-binary-classif-staging'
+        model_name = 'xray-binary-classification'
         try:
             with mlflow.start_run(run_id=run_id) as run:
                 model_versions = client.search_model_versions(f"name='{model_name}'")
+                print(model_versions)
                 if model_versions:
                     # print(f"Model Version Info: {model_versions}")
                     # Model Version info object
@@ -55,7 +56,6 @@ def update_registered_model(run_id, f1_score, pred_acc):
 
                     # CHEK TEAMS, ini harus diimprove logicsnya.
                     # Set model tag to production 
-                    latest_version = int(registered_version) + 1
 
                     # client.set_model_version_tag(model_name, str(latest_version), "validation_status", "pending")
                     # client.set_registered_model_alias(model_name,  "staging", latest_version)
@@ -82,6 +82,7 @@ def update_registered_model(run_id, f1_score, pred_acc):
                         print(f"Description: {mv.description}")
                         print(f"Status: {mv.status}")
 
+                        latest_version = int(registered_version) + 1
 
                         client.set_registered_model_alias(model_name, "production", latest_version) # Set new version to production alias
                         client.set_model_version_tag(model_name, str(latest_version), "validation_status", "promoted") # Set version tag promoted for new model version
@@ -107,8 +108,12 @@ def update_registered_model(run_id, f1_score, pred_acc):
                     # If no model exists, register a new model
                     print("No model found. Registering a new model...")
                     model_uri = f"runs:/{run.info.run_id}/model"
-                    client.create_registered_model(model_name)  # Create a new registered model if none exists
-                    client.create_model_version(model_name, model_uri, run.info.run_id)
+                    mlflow.register_model(model_uri, model_name)
+                    client.set_model_version_tag(model_name, str(latest_version), "validation_status", "promoted") # Set version tag promoted for new model version
+                    client.set_model_version_tag(model_name, str(latest_version), "stage", "production") # Set new model tag to production
+                    
+                    #client.create_registered_model(model_name)  # Create a new registered model if none exists
+                    # client.create_model_version(model_name, model_uri, run.info.run_id)
                     print("New model version registered.")
 
         except mlflow.exceptions.MlflowException as e:
@@ -126,6 +131,3 @@ def update_registered_model(run_id, f1_score, pred_acc):
 #     acc = 0.9532938694953918
 #     pred_acc = 0.7084615384615384
 #     update_registered_model(run_id, loss, acc, pred_acc)
-
-
-

@@ -11,7 +11,8 @@ import datetime
 from workflows.preprocessing import preprocessing_data
 from workflows.training import train_pipeline
 from workflows.validation import validate_model
-from utils.model_register import update_registered_model
+from utils.vibe_model_register import update_registered_model
+
 
 from tensorflow.keras import models, layers
 from mlflow.models import infer_signature
@@ -52,9 +53,7 @@ def main_pipeline():
     f1_score = classif_report['overall_f1']
 
     # Update register model based on testing accuracy and prediction accuracy
-    
-
-    ####### update_registered_model(run_id, f1_score, pred_acc=predict_acc)
+    update_registered_model(run_id, f1_score, pred_acc=predict_acc)
     
     # Log input dataset
     # train_dataset = from_tensorflow(train_gen)
