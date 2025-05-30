@@ -54,6 +54,24 @@ But when not specified it, the pipeline not tracked into "pipeline run" even tho
 It could be a BUG from MLFLOW: 
 http://github.com/mlflow/mlflow/issues/4830
 
+# Progress
+For now, retraining pipeline is already finished. 
+Based on f1-score and prediction accuracy, new model would be stored into mlflow registry with aliases `@production`.
+
+This is the objective of how to retraining pipeline and store it into mlflow registry:
+- If there is no model in the registry, the new model is saved.
+- If a model already exists, the new model is compared with the registered one.
+    - If it performs better, it is saved and promoted.
+    - If it is not better, it is not saved.
+
+> Condition in MLFLow experiment
+![Baru](../../images_git/retrain_exp_fail.png)
+
+
+> Condition in MLFlow Registry
+![Baru](../../images_git/retrain_registry.png)
+
+
 
 # Still need to explore
 - Monitoring and Logging
